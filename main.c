@@ -194,11 +194,37 @@ void checkStationSwitch(int *starting_line, int *starting_station) {
 	}
 }
 
+int getBalance() {
+	int balance = 0;
+	
+	printf("Please enter your balance: ");
+	scanf("%d", &balance);
+
+	if (balance == 4) {
+		if (balance < 15) {
+			printf("You don't have enough balance to ride.\n");
+			exit(0);
+		}
+	} else {
+		if (balance < 20) {
+			printf("You don't have enough balance to ride.\n");
+			exit(0);
+		}
+	}
+	return balance;
+}
+
+int calculateBalance(int balance, int total_fare) {
+	int new_balance = balance - total_fare;
+	return new_balance;
+}
+
 int main()
 {
 	int starting_line = getStartingLine();
 	int card_type = getCardType();
 	float discount_multiplier = getDiscountMultiplier(card_type);
+	int balance = getBalance();
 	int station_switch_first_check = 0;
 	int starting_station, destination_station;
 
@@ -252,7 +278,10 @@ int main()
 		} else {
 			int fare = calculateFare(starting_line, starting_station, destination_station);
 			total_fare += fare * discount_multiplier;
-			printf("Your fare is: %d\n", total_fare);
+			printf("Your fare is: P%d\n", total_fare);
+
+			balance = calculateBalance(balance, total_fare);
+			printf("Your balance is: P%d\n", balance);
 		}
 		
 		printf("Do you want to ride again? (Y/N)\n\n\n");
@@ -264,7 +293,8 @@ int main()
 		starting_station = destination_station;
 	}
 
-	printf("Your total fare is: %d\n", total_fare);
+	printf("Your total fare is: P%d\n", total_fare);
+	printf("Your balance is: P%d\n", balance);
 	printf("Thank you for using Elaijah's Station Simulator!\n");
 
 	return 0;
