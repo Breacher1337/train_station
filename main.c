@@ -130,7 +130,6 @@ int calculateFareSJ(int starting_line, int starting_station, int destination_sta
 	}
 	return fare;
 }
-	
 typedef struct {
     int line;
     int station;
@@ -221,6 +220,7 @@ int main() {
     int station_switch_first_check = 0;
     int starting_station = 0, destination_station = 0;
     int is_finished = 0;
+    int fare = 0;
     int total_fare = 0;
 	char continue_ride;
 
@@ -282,8 +282,15 @@ int main() {
         if (starting_station == destination_station) {
             printf("You are already at your destination.\n");
         } else {
-            int fare = calculateFare(starting_line, starting_station, destination_station);
-            total_fare += fare * discount_multiplier;
+
+            if (card_type == 4) {
+                fare += calculateFareSJ(starting_line, starting_station, destination_station);
+                total_fare += fare;
+            } else {
+                fare += calculateFare(starting_line, starting_station, destination_station);
+                total_fare += fare * discount_multiplier;
+            }
+
 			printf("Your fare is: P%d\n", fare);
             printf("Your total fare is: P%d\n", total_fare);
 
