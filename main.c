@@ -314,6 +314,9 @@ int main() {
     printf("Your total fare is: P%d\n", total_fare);
     printf("Your balance is: P%d\n", balance);
     printf("Thank you for using Elaijah's Station Simulator!\n");
+    printf("Press any key to exit.\n");
+
+    getch();
 
     return 0;
 }
