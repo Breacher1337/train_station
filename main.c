@@ -11,19 +11,22 @@ int getStartingLine() {
 	printf("Please select your starting line.\n");
 
 	int starting_line = 0;
-	int has_starting_line = 0;
-	while (!has_starting_line) {
-		printf("1. LRT1\n2. LRT2\n3. MRT3\nStarting line: ");
-		scanf("%d", &starting_line);
-		if (starting_line == 1 || starting_line == 2 || starting_line == 3) {
-			has_starting_line = 1;
+	while (1) {  
+			printf("1. LRT1\n2. LRT2\n3. MRT3\nStarting line: ");
 
-			return starting_line;
-		} else {
-			printf("Error. Please try again.\n");
-			return getStartingLine();
+			if (scanf("%d", &starting_line) != 1) {
+				while (getchar() != '\n');  
+				printf("Error. Please enter a number (1, 2, or 3).\n");
+				continue;  
+			}
+
+			if (starting_line == 1 || starting_line == 2 || starting_line == 3) {
+				return starting_line;  
+			} else {
+				printf("Error. Please try again.\n");
+			}
 		}
-	}
+	
 	return 0;
 }
 
@@ -233,8 +236,6 @@ int main()
 	scanf("%d", &starting_station);
 	int is_finished = 0;
 	int total_fare = 0;
-
-
 
 	while (!is_finished) {
 
