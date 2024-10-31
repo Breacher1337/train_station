@@ -218,6 +218,7 @@ int main() {
     float discount_multiplier = getDiscountMultiplier(card_type);
     int balance = getBalance(card_type);
     int station_switch_first_check = 0;
+    int total_fare_switch_first_check = 0;
     int starting_station = 0, destination_station = 0;
     int is_finished = 0;
     int fare = 0;
@@ -245,6 +246,8 @@ int main() {
             station_switch_first_check = 1;
         } else {
             checkStationSwitch(&starting_line, &starting_station);
+
+            system("cls");
         }
 
         switch (starting_line) {
@@ -265,14 +268,22 @@ int main() {
         printf("Which station are you going to?\n");
         displayStations(starting_line);
         while (1) {
-            printf("Enter destination station number (or 0 to exit): ");
+            printf("Enter station destination number (or 0 to exit): ");
             if (scanf("%d", &destination_station) != 1) {
                 while (getchar() != '\n');  
                 printf("Error. Please enter a valid station number.\n");
                 continue;
             }
             if (destination_station == 0) {
+
+                if (total_fare > 0) {
+                    printf("Your total fare is: P%d\n", total_fare);
+                    printf("Your balance is: P%d\n", balance);
+                }
+                
                 printf("Thank you for using Elaijah's Station Simulator!\n");
+                printf("Press any key to exit.\n");
+                getch();
                 exit(0);
             }
             if (isValidStation(starting_line, destination_station)) break;  
@@ -284,15 +295,20 @@ int main() {
         } else {
 
             if (card_type == 4) {
-                fare += calculateFareSJ(starting_line, starting_station, destination_station);
+                fare = calculateFareSJ(starting_line, starting_station, destination_station);
                 total_fare += fare;
             } else {
-                fare += calculateFare(starting_line, starting_station, destination_station);
+                fare = calculateFare(starting_line, starting_station, destination_station);
                 total_fare += fare * discount_multiplier;
             }
 
-			printf("Your fare is: P%d\n", fare);
-            printf("Your total fare is: P%d\n", total_fare);
+            if (total_fare_switch_first_check == 0) {
+                printf("Your fare is: P%d\n", total_fare);
+                total_fare_switch_first_check = 1;
+            } else {
+                printf("Your fare for this ride is: P%d\n", fare);
+                printf("Your total fare is: P%d\n", total_fare);
+            }
 
             balance = calculateBalance(balance, total_fare);
             printf("Your balance is: P%d\n", balance);
